@@ -8,29 +8,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-latex:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up TeX Live
-        uses: teatimeguest/setup-texlive@v3
-        with:
-          packages: >-
-            scheme-basic
-            amsmath
-            geometry
-            graphicx
-            booktabs
-            caption
-            subcaption
-            float
-            natbib
-            hyperref
-            xcolor
-            listings
+      - name: Install TeX Live (full scheme)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full biber
 
       - name: Create report directory
         run: mkdir -p report
@@ -39,14 +27,22 @@ jobs:
         working-directory: latex
         run: |
           pdflatex -interaction=nonstopmode -halt-on-error report.tex
-          bibtex report
           pdflatex -interaction=nonstopmode -halt-on-error report.tex
           pdflatex -interaction=nonstopmode -halt-on-error report.tex
           mv report.pdf ../report/report.pdf
+          mv report.log ../report/report.log || true
+          mv report.aux ../report/report.aux || true
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
-          name: latex-report
+          name: numerical-integration-benchmark-report
           path: report/report.pdf
-          retention-days: 5
+          retention-days: 30
+
+      - name: Upload log (for debugging)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-build-log
+          path: report/report.log
