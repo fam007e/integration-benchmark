@@ -1,0 +1,60 @@
+================================================================================
+NUMERICAL INTEGRATION BENCHMARK - SUMMARY REPORT
+================================================================================
+
+OVERALL STATISTICS
+----------------------------------------
+Total benchmarks run: 190
+Problems tested: 10
+Methods evaluated: 19
+Method categories: Newton-Cotes, Gaussian, Extrapolation, Chebyshev, DoubleExp, Stochastic, Quasi-Random
+
+TOP 10 METHODS BY AVERAGE FOM
+----------------------------------------
+ 1. Gauss2_n25                     (log₁₀FOM:   26.85, Gaussian)
+ 2. Midpoint_n50                   (log₁₀FOM:   26.76, Newton-Cotes)
+ 3. Romberg_k8                     (log₁₀FOM:   26.75, Extrapolation)
+ 4. Gauss7_n25                     (log₁₀FOM:   26.67, Gaussian)
+ 5. Gauss10_n25                    (log₁₀FOM:   26.61, Gaussian)
+ 6. Gauss3_n25                     (log₁₀FOM:   26.50, Gaussian)
+ 7. TanhSinh_lv5                   (log₁₀FOM:   26.48, DoubleExp)
+ 8. Boole_n100                     (log₁₀FOM:   26.47, Newton-Cotes)
+ 9. Trapezium_n50                  (log₁₀FOM:   26.46, Newton-Cotes)
+10. Simpson_n50                    (log₁₀FOM:   26.36, Newton-Cotes)
+
+
+BEST METHOD IN EACH CATEGORY
+----------------------------------------
+Newton-Cotes        : Midpoint_n50                   (log₁₀FOM:   27.76)
+Gaussian            : Gauss2_n25                     (log₁₀FOM:   27.85)
+Extrapolation       : Romberg_k8                     (log₁₀FOM:   27.75)
+Chebyshev           : ClenshawCurtis_n50             (log₁₀FOM:   20.00)
+DoubleExp           : TanhSinh_lv5                   (log₁₀FOM:   27.48)
+Stochastic          : MonteCarlo_1e4                 (log₁₀FOM:    6.45)
+Quasi-Random        : QuasiMC_1e4                    (log₁₀FOM:   20.00)
+
+
+BEST METHOD FOR EACH PROBLEM
+----------------------------------------
+Exponential               (Easy      ): Gauss3_n25                    
+Polynomial_x7             (Easy      ): Gauss3_n25                    
+Sin_10x                   (Medium    ): Gauss2_n25                    
+Gaussian                  (Easy      ): Gauss7_n25                    
+Runge_Function            (Hard      ): Midpoint_n50                  
+Weak_Singular             (Hard      ): TanhSinh_lv5                  
+Cos_50pi                  (Very_Hard ): Gauss10_n25                   
+Sine                      (Easy      ): Gauss3_n25                    
+Sin_times_Cos             (Easy      ): Midpoint_n50                  
+Rational_1over1+x2        (Medium    ): Gauss3_n25                    
+
+
+CONVERGENCE RATE ESTIMATES
+----------------------------------------
+Midpoint            : O(n^ -2.00)
+Trapezium           : O(n^ -2.00)
+Simpson             : O(n^ -4.00)
+Gauss3              : O(n^ -0.69)
+Gauss5              : O(n^  0.26)
+ClenshawCurtis      : O(n^ -0.98)
+
+================================================================================

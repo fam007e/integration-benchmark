@@ -1,0 +1,52 @@
+name: Compile LaTeX Report
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up TeX Live
+        uses: teatimeguest/setup-texlive@v3
+        with:
+          packages: >-
+            scheme-basic
+            amsmath
+            geometry
+            graphicx
+            booktabs
+            caption
+            subcaption
+            float
+            natbib
+            hyperref
+            xcolor
+            listings
+
+      - name: Create report directory
+        run: mkdir -p report
+
+      - name: Compile LaTeX document
+        working-directory: latex
+        run: |
+          pdflatex -interaction=nonstopmode -halt-on-error report.tex
+          bibtex report
+          pdflatex -interaction=nonstopmode -halt-on-error report.tex
+          pdflatex -interaction=nonstopmode -halt-on-error report.tex
+          mv report.pdf ../report/report.pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-report
+          path: report/report.pdf
+          retention-days: 5
