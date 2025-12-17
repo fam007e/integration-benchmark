@@ -1,26 +1,34 @@
-name: Compile LaTeX Report
+name: Compile LaTeX Report and Commit PDF
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'latex/report.tex'
+      - 'plots/**'
   pull_request:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write  # Required for pushing commits
+
 jobs:
-  build-latex:
+  build-and-commit:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for clean pushes
 
-      - name: Install TeX Live (full scheme)
+      - name: Install TeX Live
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full biber
+          sudo apt-get install -y texlive-full
 
-      - name: Create report directory
+      - name: Create report directory (if not exists)
         run: mkdir -p report
 
       - name: Compile LaTeX document
@@ -29,20 +37,25 @@ jobs:
           pdflatex -interaction=nonstopmode -halt-on-error report.tex
           pdflatex -interaction=nonstopmode -halt-on-error report.tex
           pdflatex -interaction=nonstopmode -halt-on-error report.tex
-          mv report.pdf ../report/report.pdf
-          mv report.log ../report/report.log || true
-          mv report.aux ../report/report.aux || true
 
-      - name: Upload PDF artifact
+      - name: Move PDF to report directory
+        run: mv latex/report.pdf report/report.pdf
+
+      - name: Commit and push PDF if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add report/report.pdf
+          if git diff --staged --quiet; then
+            echo "No changes to PDF, skipping commit"
+          else
+            git commit -m "Update compiled report.pdf [ci skip]"
+            git push origin HEAD:${{ github.ref }}
+          fi
+
+      - name: Upload PDF as artifact (fallback/download)
         uses: actions/upload-artifact@v4
         with:
           name: numerical-integration-benchmark-report
           path: report/report.pdf
           retention-days: 30
-
-      - name: Upload log (for debugging)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: latex-build-log
-          path: report/report.log
