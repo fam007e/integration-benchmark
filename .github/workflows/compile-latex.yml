@@ -21,6 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
           fetch-depth: 0  # Full history for clean pushes
 
       - name: Install TeX Live
@@ -50,7 +51,7 @@ jobs:
             echo "No changes to PDF, skipping commit"
           else
             git commit -m "Update compiled report.pdf [ci skip]"
-            git push origin HEAD:${{ github.ref }}
+            git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref }}
           fi
 
       - name: Upload PDF as artifact (fallback/download)
