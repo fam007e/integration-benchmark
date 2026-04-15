@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Upload PDF as artifact (fallback/download)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: numerical-integration-benchmark-report
           path: report/report.pdf
