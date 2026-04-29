@@ -2,17 +2,17 @@
 # Install with: pip install -r requirements.txt
 
 # Core data processing
-pandas>=1.5.0
-numpy>=1.23.0
+pandas>=3.0.2
+numpy>=2.4.4
 
 # Visualization
-matplotlib>=3.6.0
-seaborn>=0.12.0
+matplotlib>=3.10.8
+seaborn>=0.13.2
 
 # Scientific computing
-scipy>=1.9.0
+scipy>=1.17.1
 
 # Optional: Enhanced visualization
-plotly>=5.11.0  # Interactive plots (optional)
-pillow>=10.2.0 # pinned by Snyk to avoid vulnerabilities (CVE-2023-44271, etc.)
-fonttools>=4.62.0 # pinned by Snyk to avoid vulnerabilities (CVE-2024-50602, etc.)
+plotly>=6.7.0  # Interactive plots (optional)
+pillow>=12.2.0 # pinned by Snyk to avoid vulnerabilities (CVE-2023-44271, etc.)
+fonttools>=4.62.1 # pinned by Snyk to avoid vulnerabilities (CVE-2024-50602, etc.)
